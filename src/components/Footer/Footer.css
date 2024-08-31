@@ -1,0 +1,42 @@
+.footer-container {
+  margin-top: auto;
+  background-color: #2a2a2a;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 70px;
+  align-items: center;
+  color: #ff7f00; /* Change text color to orange */
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.footer-container > h3,
+.icons-container {
+  flex: 0 0 auto !important;
+}
+
+.footer-container > h3 {
+  text-transform: uppercase;
+  color: #ff7f00; /* Ensure the heading text is orange */
+}
+
+.icons-container {
+  display: flex;
+  gap: 25px;
+}
+
+.icons-container a {
+  color: #ffffff; /* Keep icons white */
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.icons-container a:hover {
+  color: #ff7f00; /* Change icon color to orange on hover */
+}
+
+@media all and (max-width: 1200px) {
+  .footer-container {
+    display: none;
+  }
+}

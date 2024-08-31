@@ -1,0 +1,61 @@
+.card-container {
+    background-color: #1e1e1e;
+    max-width: 424px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .card-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.7);
+  }
+  
+  .card-details {
+    padding: 0 15px;
+  }
+  
+  .card-header {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-name {
+    color: #ffffff;
+  }
+  
+  .card-price {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 12px;
+    background: #ff7f00; /* Set the orange background color here */
+    padding: 9px 35px;
+  }
+  
+  .card-btn {
+    background-color: #2a2a2a;
+    border-radius: 12px;
+    color: #ffffff;
+    padding: 18px;
+    width: 280px;
+    z-index: 1;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    height: 90px;
+  }
+  
+  .card-container:hover .card-btn {
+    opacity: 1;
+  }
+  

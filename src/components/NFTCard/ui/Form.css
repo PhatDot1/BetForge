@@ -1,0 +1,18 @@
+.form-field {
+    margin-bottom: 20px;
+  }
+  
+  .form-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .form-message {
+    color: red;
+    font-size: 0.875rem;
+  }
+  

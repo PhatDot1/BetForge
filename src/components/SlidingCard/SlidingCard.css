@@ -1,0 +1,141 @@
+.slide-card-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 70px;
+  background-color: #1e1e1e;
+  margin: 20px 70px;
+  border-radius: 12px;
+  align-items: center;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-card-container:hover {
+  transform: translateY(-5px);
+}
+
+.content-container,
+.olympics-image {
+  flex: 0 0 auto !important;
+}
+
+.olympics-image {
+  border-radius: 12px;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+}
+
+.content-container > p {
+  padding: 12px 40px; 
+  border-radius: 12px;
+  background: #ff7f00;
+  color: #ffffff;
+  font-size: 16px; 
+  font-weight: 700; 
+  max-width: 200px; 
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.content-container > h2 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.content-container > h3 {
+  font-size: 64px;
+  color: #ff7f00;
+  font-weight: 800;
+}
+
+.profile-container {
+  display: flex;
+  gap: 20px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+  margin: auto 0;
+}
+
+.artist {
+  color: #b0b0b0;
+  font-size: 12px;
+}
+
+.artist-name {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.btns-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px 40px;
+  margin-top: 40px;
+}
+
+.buy-btn,
+.collections-btn {
+  display: inline-flex; /* Use inline-flex for proper alignment */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  border-radius: 12px;
+  padding: 24px;
+  width: 220px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none; /* Ensure the Link text doesn't get underlined */
+  text-align: center; /* Ensure the text is centered */
+}
+
+.buy-btn {
+  background-color: #ff7f00;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+  background-color: #e66b00;
+}
+
+.collections-btn {
+  background-color: transparent;
+  border: 1px solid #ff7f00;
+  color: #ff7f00;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.collections-btn:hover {
+  background-color: #ff7f00;
+  color: #ffffff;
+}
+
+.progress-bars-container {
+  display: flex;
+  gap: 20px;
+  padding: 0 95px;
+  margin: 140px 0 10px 0;
+}
+
+@media all and (max-width: 1200px) {
+  .slide-card-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .olympics-image {
+    width: 100% !important;
+    align-self: center;
+    margin: auto;
+  }
+}
