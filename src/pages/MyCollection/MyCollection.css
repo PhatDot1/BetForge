@@ -1,0 +1,36 @@
+.collections {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 30px 50px;
+    flex-wrap: wrap;
+    gap: 40px 20px; /* Consistent gap between the cards */
+  }
+  
+  .nft-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 150px; /* Adjust the width to match the card size on the Home page */
+    text-align: center;
+  }
+  
+  .nft-image {
+    width: 100px; /* Adjust the size of the NFT image */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .nft-id {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+  }
+  

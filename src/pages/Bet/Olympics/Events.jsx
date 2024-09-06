@@ -3,6 +3,18 @@ import axios from "axios";
 import { AssetCard } from "../../../components";
 import { WalletContext } from "../../../contexts/WalletContext"; // Adjust the import path as necessary
 import "./Events.css";
+import avatarsq from "../../../assets/avatarsq.png";
+import TysonGay from "../../../assets/Tyson_Gay.jpg";
+import YohanBlake from "../../../assets/Yohan_Blake.jpg";
+import JustinGatlin from "../../../assets/Justin_Gatlin.jpg";
+import AsafaPowell from "../../../assets/Asafa_Powell.jpg";
+import MichaelJohnson from "../../../assets/Michael_Johnson.jpg";
+import FrankFredericks from "../../../assets/Frank_Fredericks.jpg";
+import CarlLewis from "../../../assets/Carl_Lewis.jpg";
+import AllysonFelix from "../../../assets/Allyson_Felix.jpg";
+import TomDaley from "../../../assets/Tom_Daley.jpg";
+import ChenAisen from "../../../assets/Chen_Aisen.jpg";
+import DavidBoudia from "../../../assets/David_Boudia.jpg";
 
 const OlympicEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,18 +25,18 @@ const OlympicEvents = () => {
   const { walletAddress } = useContext(WalletContext);
 
   const athletes = [
-    { title: "Usain Bolt", event: "100m", price: 0.12, imageSrc: "/path/to/image1.jpg", link: "/bet/olympics/100m" },
-    { title: "Tyson Gay", event: "100m", price: 0.13, imageSrc: "/path/to/image2.jpg", link: "/bet/olympics/100m" },
-    { title: "Yohan Blake", event: "100m", price: 0.14, imageSrc: "/path/to/image3.jpg", link: "/bet/olympics/100m" },
-    { title: "Justin Gatlin", event: "100m", price: 0.15, imageSrc: "/path/to/image4.jpg", link: "/bet/olympics/100m" },
-    { title: "Asafa Powell", event: "100m", price: 0.16, imageSrc: "/path/to/image5.jpg", link: "/bet/olympics/100m" },
-    { title: "Michael Johnson", event: "200m", price: 0.15, imageSrc: "/path/to/image2.jpg", link: "/bet/olympics/200m" },
-    { title: "Frank Fredericks", event: "200m", price: 0.16, imageSrc: "/path/to/image3.jpg", link: "/bet/olympics/200m" },
-    { title: "Carl Lewis", event: "200m", price: 0.17, imageSrc: "/path/to/image4.jpg", link: "/bet/olympics/200m" },
-    { title: "Allyson Felix", event: "200m", price: 0.18, imageSrc: "/path/to/image5.jpg", link: "/bet/olympics/200m" },
-    { title: "Tom Daley", event: "Diving (10m)", price: 0.22, imageSrc: "/path/to/image5.jpg", link: "/bet/olympics/platform-diving" },
-    { title: "Chen Aisen", event: "Diving (10m)", price: 0.23, imageSrc: "/path/to/image6.jpg", link: "/bet/olympics/platform-diving" },
-    { title: "David Boudia", event: "Diving (10m)", price: 0.24, imageSrc: "/path/to/image7.jpg", link: "/bet/olympics/platform-diving" },
+    { title: "Usain Bolt", event: "100m", price: 0.12, imageSrc: avatarsq, link: "/bet/olympics/100m" },
+    { title: "Tyson Gay", event: "100m", price: 0.13, imageSrc: TysonGay, link: "/bet/olympics/100m" },
+    { title: "Yohan Blake", event: "100m", price: 0.14, imageSrc: YohanBlake, link: "/bet/olympics/100m" },
+    { title: "Justin Gatlin", event: "100m", price: 0.15, imageSrc: JustinGatlin, link: "/bet/olympics/100m" },
+    { title: "Asafa Powell", event: "100m", price: 0.16, imageSrc: AsafaPowell, link: "/bet/olympics/100m" },
+    { title: "Michael Johnson", event: "200m", price: 0.15, imageSrc: MichaelJohnson, link: "/bet/olympics/200m" },
+    { title: "Frank Fredericks", event: "200m", price: 0.16, imageSrc: FrankFredericks, link: "/bet/olympics/200m" },
+    { title: "Carl Lewis", event: "200m", price: 0.17, imageSrc: CarlLewis, link: "/bet/olympics/200m" },
+    { title: "Allyson Felix", event: "200m", price: 0.18, imageSrc: AllysonFelix, link: "/bet/olympics/200m" },
+    { title: "Tom Daley", event: "Diving (10m)", price: 0.22, imageSrc: TomDaley, link: "/bet/olympics/platform-diving" },
+    { title: "Chen Aisen", event: "Diving (10m)", price: 0.23, imageSrc: ChenAisen, link: "/bet/olympics/platform-diving" },
+    { title: "David Boudia", event: "Diving (10m)", price: 0.24, imageSrc: DavidBoudia, link: "/bet/olympics/platform-diving" },
   ];
 
   // Function to handle search
@@ -142,7 +154,7 @@ const OlympicEvents = () => {
               <AssetCard
                 key={index}
                 title={athlete.title}
-                price={`${athlete.price} BTC`}
+                price={`${athlete.price} ETH`}
                 imageSrc={athlete.imageSrc}
                 link={athlete.link}
                 eventType={athlete.event}

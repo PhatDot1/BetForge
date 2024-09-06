@@ -58,4 +58,57 @@
   .card-container:hover .card-btn {
     opacity: 1;
   }
-  
+ 
+
+  /* General Modal Styles */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2a2a2a; /* Dark background to match your theme */
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff; /* White text color for contrast */
+  max-width: 500px; /* Width constraint for the modal */
+  width: 90%; /* Ensure responsiveness */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7); /* Add a subtle shadow */
+  z-index: 1000; /* Ensure it appears on top of other content */
+}
+
+.modal h2 {
+  color: #ff7f00; /* Use your theme's orange color for headings */
+  margin-bottom: 20px;
+}
+
+.modal p {
+  color: #ffffff; /* White text for paragraphs */
+  margin-bottom: 20px;
+}
+
+.modal button {
+  background-color: #ff7f00; /* Orange background for buttons */
+  color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.modal button:hover {
+  background-color: #e66b00; /* Slightly darker orange on hover */
+}
+
+/* Modal Overlay Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* Dark overlay with transparency */
+  z-index: 999; /* Ensure it appears just below the modal itself */
+}

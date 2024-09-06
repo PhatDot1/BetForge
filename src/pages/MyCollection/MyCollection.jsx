@@ -1,62 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { useAccount, usePublicClient } from "wagmi";
-import { NFTCardFooterSell } from "../../components/NFTCard/NFTCardFooterSell";
-import { erc721Abi } from "viem";
+import React from "react";
 import "./MyCollection.css";
-import { chainToChainConfig } from "../../Config";
+import placeholderNFT from "../../assets/placeholderNFT.gif"; // Adjust the path according to your project structure
 
 const MyCollection = () => {
-  const { address, chain } = useAccount();
-  const publicClient = usePublicClient();
-  const [userNFTs, setUserNFTs] = useState([]);
-
-  useEffect(() => {
-    const fetchNFTs = async () => {
-      if (address && chain) {
-        // Fetch NFTs owned by the user
-        const nftContract = {
-          address: chainToChainConfig(chain).wrappedNFT,
-          abi: erc721Abi,
-        };
-
-        const balance = await publicClient.readContract({
-          ...nftContract,
-          functionName: "balanceOf",
-          args: [address],
-        });
-
-        const nfts = [];
-        for (let i = 0; i < balance; i++) {
-          const tokenId = await publicClient.readContract({
-            ...nftContract,
-            functionName: "tokenOfOwnerByIndex",
-            args: [address, i],
-          });
-
-          const tokenURI = await publicClient.readContract({
-            ...nftContract,
-            functionName: "tokenURI",
-            args: [tokenId],
-          });
-
-          nfts.push({ id: tokenId, uri: tokenURI });
-        }
-
-        setUserNFTs(nfts);
-      }
-    };
-
-    fetchNFTs();
-  }, [address, chain, publicClient]);
+  // Simulating a single placeholder NFT for the showcase
+  const placeholderNFTs = [
+    {
+      id: "1", // This is just a placeholder ID
+      uri: placeholderNFT,
+    },
+  ];
 
   return (
-    <div className="my-collection-container">
-      <h1>My Collection</h1>
-      {userNFTs.map((nft, index) => (
-        <div key={index} className="nft-card">
-          <NFTCardFooterSell nft={nft} />
-        </div>
-      ))}
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h3
+        style={{
+          marginLeft: 70,
+          marginTop: 30,
+          color: "#ff7f00",
+          fontSize: 24,
+          fontWeight: 800,
+        }}
+      >
+        My Assets
+      </h3>
+      <div className="collections">
+        {placeholderNFTs.length > 0 ? (
+          placeholderNFTs.map((nft, index) => (
+            <div key={index} className="nft-card">
+              <img src={nft.uri} alt={`NFT ${nft.id}`} className="nft-image" />
+              <p className="nft-id">NFT ID: {nft.id}</p>
+            </div>
+          ))
+        ) : (
+          <p>No NFTs found in your collection.</p>
+        )}
+      </div>
     </div>
   );
 };

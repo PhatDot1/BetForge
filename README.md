@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# BetForge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+BetForge is your all-in-one NFT sports betting platform, designed to bring the excitement of real-world events into the world of blockchain. By leveraging a multichain architecture and the power of Wormhole, BetForge allows users to mint, trade, and manage NFTs linked to real-world events across various blockchain networks.
 
-In the project directory, you can run:
+![Homepage](src/assets/homepage.png)
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Mint Event-Linked NFTs**: Users can mint NFTs tied to real-world events, with seamless bridging to the blockchain of their choice.
+- **Cross-Chain NFT Marketplace**: List, buy, and sell NFTs across supported chains before, during, or after the outcome of the linked event.
+- **Dynamic NFT Metadata**: NFT metadata is automatically updated based on event outcomes, which can enhance their value or trigger burning mechanisms.
+- **Integrated Wormhole Connect**: Effortlessly transfer funds across chains with Wormhole Connect, ensuring a smooth cross-chain experience.
+- **Future Betting Features**: Planned integration of real-time betting features for various games, expanding the platform's utility.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies
 
-### `npm test`
+- **Wormhole Relayer**: Facilitates cross-chain communication for NFT activities, including minting, trading, and metadata updates.
+- **Wormhole Connect**: Enables quick and efficient cross-chain fund transfers, enhancing the user experience.
+- **Candy Machine (Solana)**: Utilized for minting NFTs and managing cross-chain bridges.
+- **EVM Smart Contracts**: Deployed on Arbitrum, Ethereum, and Optimism, these contracts handle NFT minting, trading, and cross-chain messaging.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Smart Contracts
 
-### `npm run build`
+- **Mint & Bridge NFTs**: Managed by the Candy Machine contract on Solana, ensuring efficient minting and bridging.
+- **NFT Trading**: Contracts deployed on Arbitrum, Ethereum, Optimism, and Solana (future) facilitate the buying, selling, and listing of NFTs.
+- **Cross-Chain Messaging**: EVM contracts handle cross-chain communication, with future expansion to Solana.
+- **NFT Management**: Contracts on Arbitrum, Ethereum, and Optimism handle the minting and management of NFTs.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How It Works
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Bet by Minting NFTs**: Users mint NFTs linked to real-world events on any supported chain.
+2. **Automatic Bridging**: Upon purchase, NFTs are automatically bridged to the chain of the user's wallet.
+3. **Trade NFTs**: Users can trade these NFTs across chains, before or after the event's outcome.
+4. **Dynamic Metadata Updates**: The NFTs’ metadata will reflect the event outcome, either increasing in value if successful or being burned if not.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Future Developments
 
-### `npm run eject`
+- **Support for More Chains**: Expansion to additional blockchain networks to increase accessibility.
+- **Dynamic Visuals**: Update NFT visuals alongside metadata based on event outcomes.
+- **Real-Time Price Updates**: Reflect real-time prices according to the user's connected chain.
+- **Online Casino**: An array of games for the user to bet their funds directly!
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Sustainable NFT Model
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+BetForge’s approach ensures that NFTs are only minted upon confirmed demand, minimizing unnecessary minting and reducing the risk of oversupply. This efficient model supports a sustainable and economically sound NFT marketplace.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Getting Started
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Connect Your Wallet**: Make sure you have a wallet on any supported blockchain network.
+2. **Mint or Buy NFTs**: Start by minting or purchasing event-linked NFTs.
+3. **Trade & Transfer**: List your NFTs for sale or transfer funds across chains using Wormhole Connect.
+4. **Monitor Event Outcomes**: Watch as the NFT metadata updates based on real-world event outcomes.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+BetForge is redefining NFT sports betting by integrating real-world events with blockchain technology, offering users a unique and dynamic experience. Join us in this exciting journey and be part of the future of sports betting.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Screenshots
 
-### Code Splitting
+### Buy/Mint NFTs
+![Buy/Mint Olympics](src/assets/buy-mint_olympics.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### View Assets
+![View Assets](src/assets/viewassets.png)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Bridge Funds
+![Bridge Funds](src/assets/bridge.png)

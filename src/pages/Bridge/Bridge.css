@@ -1,0 +1,49 @@
+/* General Page Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container for the Bridge Page */
+  .bridge-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px; /* Lower the content on the page */
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  /* Main Heading for the Bridge Page */
+  .bridge-heading {
+    color: #ff7f00; /* Match the orange color in your theme */
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+  
+  /* Subheading for Additional Context */
+  .bridge-subheading {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+  
+  /* Container for the Wormhole Integration Widget */
+  .wormhole-widget {
+    width: 100%; /* Make the widget take full width of the container */
+    max-width: 800px;
+    min-height: 400px; /* Ensure widget is visible */
+    background-color: #2a2a2a; /* Background to match the theme */
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
