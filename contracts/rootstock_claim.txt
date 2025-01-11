@@ -1,0 +1,56 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; // Import ERC721 for tokenURI
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract RootstockNFTClaim is Ownable {
+    uint256 public constant CLAIM_REWARD = 0.1 ether; // Reward for claiming
+    mapping(uint256 => bool) public claimed; // Mapping to track claimed NFTs
+
+    address public mintingContractAddress;
+    IERC721 public nftContract; // Reference to the minting contract
+
+    // Events
+    event Claim(address indexed claimer, uint256 tokenId, uint256 reward);
+
+    constructor(address _nftContractAddress) Ownable() {
+        nftContract = IERC721(_nftContractAddress); // Initialize NFT contract interface
+    }
+
+    // Set the minting contract address (allowing only owner of the claiming contract to update)
+    function setMintingContract(address _mintingContractAddress) external onlyOwner {
+        mintingContractAddress = _mintingContractAddress;
+    }
+
+    // Public function to claim the reward (0.1 ETH)
+    function claim(uint256 tokenId) public {
+        require(nftContract.ownerOf(tokenId) == msg.sender, "You must own the NFT to claim");
+        require(!claimed[tokenId], "NFT has already been claimed");
+        
+        // Ensure the NFT has result: win in its metadata
+        ERC721 nft = ERC721(address(nftContract)); // Cast to ERC721 to access tokenURI
+        string memory tokenMetadata = nft.tokenURI(tokenId); // Get metadata URI
+        require(keccak256(abi.encodePacked(tokenMetadata)) == keccak256(abi.encodePacked("result: win")), "NFT does not have result: win");
+
+        // Mark the NFT as claimed
+        claimed[tokenId] = true;
+
+        // Transfer the reward to the NFT owner
+        payable(msg.sender).transfer(CLAIM_REWARD);
+
+        emit Claim(msg.sender, tokenId, CLAIM_REWARD);
+    }
+
+    // Function to withdraw funds (only owner)
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No funds to withdraw");
+        payable(owner()).transfer(balance);
+    }
+
+    receive() external payable {}
+
+    fallback() external payable {}
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Test NFT Token #4",
+    "description": "This is the fourth NFT",
+    "image": "ipfs://Qmedyre1SDz6XNFFcMiFRsSXbB26j6sfLSTES9AnpxU4S6", 
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "Blue"
+      },
+      {
+        "trait_type": "Rarity",
+        "value": "Common"
+      }
+    ]
+  }
+  

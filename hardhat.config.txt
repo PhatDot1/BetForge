@@ -1,0 +1,13 @@
+//HARDHAT.CONFIG.JS FOR ARBITRUM MINTER
+require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-ethers");
+
+module.exports = {
+  solidity: "0.8.24",
+  networks: {
+    arbitrumSepolia: {
+      url: "https://arbitrum-sepolia.infura.io/v3/0d4aa52670ca4855b637394cb6d0f9ab", // Your Infura URL
+      accounts: ["0xb07f4be4590b7b00053ec67720180c3d1d84dffdc7ad1fceeafee5e9d875336c"], // Your private key
+    }
+  }
+};

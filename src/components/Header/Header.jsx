@@ -1,175 +1,356 @@
-import React, { useState, useContext, useRef } from "react";
-import { Link } from "react-router-dom"; 
-import Web3Modal from "web3modal";
-import { Web3Provider } from "@ethersproject/providers";
-import "./Header.css";
-import { WalletContext } from "../../contexts/WalletContext";
+"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-const Header = () => {
-  const { walletAddress, setWalletAddress } = useContext(WalletContext);
-  const [dropdowns, setDropdowns] = useState({
-    sports: false,
-    esports: false,
-    casino: false,
-  });
+import { useState, useEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, AlertTriangle } from 'lucide-react';
+import Image from 'next/image';
+import Web3Modal from 'web3modal';
+import { BrowserProvider, Contract, parseUnits, formatUnits } from 'ethers';
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import { useWallet } from '@/contexts/WalletContext';
 
-  const [provider, setProvider] = useState(null);
-  const web3ModalRef = useRef(null);
-
-  // Initialize Web3Modal only once
-  if (!web3ModalRef.current) {
-    web3ModalRef.current = new Web3Modal({
-      cacheProvider: true, 
-      providerOptions: {
-        injected: {
-          display: {
-            name: "MetaMask",
-            description: "Connect with the provider in your Browser"
-          },
-          package: null
-        },
-        phantom: {
-          display: {
-            name: "Phantom",
-            description: "Connect to Phantom Wallet"
-          },
-          package: null,
-          connector: async () => {
-            if (window.solana && window.solana.isPhantom) {
-              await window.solana.connect();
-              return window.solana;
-            } else {
-              window.open("https://phantom.app/", "_blank");
-              throw new Error("Phantom Wallet is not installed.");
-            }
-          }
-        }
-      },
-      disableInjectedProvider: false,
-    });
+// Phantom wallet initialization as per your working version
+const connectToPhantom = async () => {
+  if (window.solana && window.solana.isPhantom) {
+    await window.solana.connect();
+    return window.solana;
+  } else {
+    window.open("https://phantom.app/", "_blank");
+    throw new Error("Phantom Wallet is not installed.");
   }
+};
+
+interface CustomError extends Error {
+  data?: {
+    message?: string;
+  };
+}
+
+const destinationWallet = '0xBaC888BfB8aBdeCb51941B5ec27D0AB51e2906D7'; // Replace with your actual destination wallet
+
+const usdcABI = [
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'recipient',
+        type: 'address'
+      },
+      {
+        name: 'amount',
+        type: 'uint256'
+      }
+    ],
+    name: 'transfer',
+    outputs: [
+      {
+        name: '',
+        type: 'bool'
+      }
+    ],
+    type: 'function'
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: 'owner',
+        type: 'address'
+      }
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        name: 'balance',
+        type: 'uint256'
+      }
+    ],
+    type: 'function'
+  }
+];
+
+// EVM wallets
+const INFURA_ID = '0d4aa52670ca4855b637394cb6d0f9ab'; // Replace with your Infura ID
+const providerOptions = {
+  walletconnect: {
+    package: WalletConnectProvider,
+    options: {
+      infuraId: INFURA_ID,
+    },
+  },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: "My App", // Replace with your app name
+      infuraId: INFURA_ID,
+      rpc: "",
+      chainId: 1,
+    },
+  },
+};
+
+export default function DepositSubmitPage() {
+  const { walletAddress, setWalletAddress } = useWallet();
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState<'success' | 'error'>('success');
+  const [usdcBalance, setUsdcBalance] = useState<string | null>(null);
+  const [maticBalance, setMaticBalance] = useState<string | null>(null);
+  const [estimatedGas, setEstimatedGas] = useState<string | null>(null);
+  const web3ModalRef = useRef<InstanceType<typeof Web3Modal> | null>(null);
+
+  const usdcTokenAddress = '0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582'; // Polygon Amoy USDC contract address
+
+  // Initialize Web3Modal for EVM wallets
+  useEffect(() => {
+    if (!web3ModalRef.current) {
+      web3ModalRef.current = new Web3Modal({
+        cacheProvider: true,
+        providerOptions,
+      });
+    }
+  }, []);
 
   const clearPreviousConnection = async () => {
     try {
       if (web3ModalRef.current) {
         await web3ModalRef.current.clearCachedProvider();
       }
-      if (provider && provider.provider && provider.provider.disconnect) {
-        await provider.provider.disconnect();
-      }
-      setProvider(null);
+      setWalletAddress(null);
     } catch (error) {
       console.error("Failed to clear previous connection", error);
     }
   };
 
-  const forceReconnect = async () => {
+  const connectWallet = async (wallet = "MetaMask") => {
+    await clearPreviousConnection();
+
     try {
-      if (window.ethereum) {
-        // Reset the Ethereum provider
-        await window.ethereum.request({
-          method: "wallet_requestPermissions",
-          params: [{ eth_accounts: {} }],
-        });
+      let instance;
+      if (wallet === "MetaMask" || wallet === "WalletConnect" || wallet === "CoinbaseWallet") {
+        instance = await web3ModalRef.current.connect();
+        const ethersProvider = new BrowserProvider(instance);
+        const signer = await ethersProvider.getSigner();
+        const address = await signer.getAddress();
+        setWalletAddress(address);
+
+        const network = await ethersProvider.getNetwork();
+        if (Number(network.chainId) !== 80002) {
+          throw new Error('Please connect to the Polygon Amoy Testnet.');
+        }
+
+        // Fetch balances
+        await fetchBalances(ethersProvider, signer, address);
+      } else if (wallet === "Phantom") {
+        // Use the custom Phantom connection logic
+        const solanaInstance = await connectToPhantom();
+        setWalletAddress(solanaInstance.publicKey?.toString());
       }
+
     } catch (error) {
-      console.error("Error in forcing reconnect:", error);
+      console.error('Wallet connection failed:', error);
+      setAlertType('error');
+      setAlertMessage(error.message || 'Failed to connect wallet. Please try again.');
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 5000);
     }
   };
 
-  const connectWallet = async () => {
-    console.log("Connect Wallet button clicked");
-
-    await clearPreviousConnection(); // Clear previous connection before attempting a new one
-
+  const fetchBalances = async (ethersProvider: BrowserProvider, signer: any, address: string) => {
     try {
-      await forceReconnect(); // Force a reset of MetaMask state
-      const instance = await web3ModalRef.current.connect();
-      const ethersProvider = new Web3Provider(instance);
-      const signer = ethersProvider.getSigner();
-      const address = await signer.getAddress();
-      setProvider(ethersProvider);
-      setWalletAddress(address);
-      console.log("Connected wallet address:", address);
-    } catch (error) {
-      console.error("Could not connect wallet", error);
+      // Fetch native MATIC balance
+      const balance = await ethersProvider.getBalance(address);
+      setMaticBalance(formatUnits(balance, 18)); // MATIC has 18 decimals
 
-      if (error.code === -32002) {
-        // QOL improvement for case where MetaMask is already processing a request
-        alert("MetaMask is already processing a connection request. Please check MetaMask and try again.");
-      } else {
-        alert("Connection attempt failed. Please try again.");
-      }
+      // Fetch user's USDC balance
+      const usdcContract = new Contract(usdcTokenAddress, usdcABI, signer);
+      const usdcBalanceRaw = await usdcContract.balanceOf(address);
+      setUsdcBalance(formatUnits(usdcBalanceRaw, 6)); // USDC has 6 decimals
+
+      // Estimate gas for the transaction
+      const estimatedGasLimit = await usdcContract.estimateGas["transfer"](destinationWallet, parseUnits('1', 6));
+      setEstimatedGas(estimatedGasLimit.toString());
+
+    } catch (error) {
+      console.error('Balance fetch failed:', error);
+      setAlertType('error');
+      setAlertMessage('Failed to fetch balances. Please try again.');
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 5000);
     }
   };
 
-  const toggleDropdown = (dropdown) => {
-    setDropdowns((prevState) => ({
-      ...prevState,
-      [dropdown]: !prevState[dropdown],
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!walletAddress) {
+      setAlertType('error');
+      setAlertMessage('Please connect your wallet first.');
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 5000);
+      return;
+    }
+
+    try {
+      const signer = await new BrowserProvider(window.ethereum).getSigner();
+      const usdcContract = new Contract(usdcTokenAddress, usdcABI, signer);
+      const amount = parseUnits('1', 6); // 1 USDC (USDC has 6 decimal places)
+
+      const transaction = await usdcContract["transfer"](destinationWallet, amount);
+      await transaction.wait();
+
+      setAlertType('success');
+      setAlertMessage('Deposit of 1 USDC successful!');
+    } catch (error) {
+      const err = error as CustomError;
+      let errorMessage = 'An error occurred during the transaction. Please try again.';
+      if (err.message?.includes('insufficient funds')) {
+        errorMessage += ' It appears you do not have enough MATIC for gas fees.';
+      }
+      setAlertType('error');
+      setAlertMessage(errorMessage);
+    }
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000);
   };
 
   return (
-    <div className="header-container">
-      <Link to="/">Betforge</Link> 
-      <div className="nav-dropdowns">
-        <div className="dropdown">
-          <button className="dropdown-btn" onClick={() => toggleDropdown("sports")}>
-            Sports
-          </button>
-          {dropdowns.sports && (
-            <div className="dropdown-content">
-              <Link to="/bet/soccer">Soccer</Link> 
-              <Link to="/bet/basketball">Basketball</Link>
-              <Link to="/bet/tennis">Tennis</Link> 
-              <Link to="/bet/olympics">Olympics</Link>
-              <Link to="/user-listed">User Listed</Link> 
+    <div className="min-h-screen flex flex-col bg-white">
+      <AnimatePresence>
+        {showAlert && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5 }}
+            className="fixed top-4 left-0 right-0 flex justify-center z-50"
+          >
+            <Alert
+              className={`${
+                alertType === 'success'
+                  ? 'bg-green-100 border-green-500 text-green-800'
+                  : 'bg-red-100 border-red-500 text-red-800'
+              } w-full max-w-2xl mx-4 flex items-center p-0 overflow-hidden`}
+            >
+              <div className="flex items-center p-4 w-full">
+                {alertType === 'success' ? (
+                  <CheckCircle className="h-5 w-5 mr-3 flex-shrink-0" />
+                ) : (
+                  <AlertTriangle className="h-5 w-5 mr-3 flex-shrink-0" />
+                )}
+                <AlertDescription className="m-0 flex-grow text-base">
+                  {alertMessage}
+                </AlertDescription>
+              </div>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex-grow flex items-center justify-center mt-16">
+        <div className="w-full max-w-2xl px-4">
+          <Image
+            src="http://cdn.mcauto-images-production.sendgrid.net/1ee5795144f269e0/64b69f03-aaa5-4272-9ebd-87a612482d43/1089x1137.png"
+            alt="Encode Logo"
+            width={128}
+            height={128}
+            className="mx-auto mb-4 object-contain"
+          />
+          <h1 className="text-[36px] font-semibold text-center text-primary mb-2">
+            Contact Information
+          </h1>
+          <p className="text-center text-base text-[#B3B3B3] mb-6">
+            Please provide us with your contact information and connect your wallet.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
             </div>
-          )}
-        </div>
-        <div className="dropdown">
-          <button className="dropdown-btn" onClick={() => toggleDropdown("esports")}>
-            eSports
-          </button>
-          {dropdowns.esports && (
-            <div className="dropdown-content">
-              <Link to="/bet/valorant">Valorant</Link> 
-              <Link to="/bet/csgo">CS:GO</Link> 
-              <Link to="/bet/dota2">Dota 2</Link> 
-              <Link to="/user-listed">User Listed</Link> 
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
             </div>
-          )}
-        </div>
-        <div className="dropdown">
-          <button className="dropdown-btn" onClick={() => toggleDropdown("casino")}>
-            Online Casino
-          </button>
-          {dropdowns.casino && (
-            <div className="dropdown-content">
-              <Link to="/bet/blackjack">Blackjack</Link> 
-              <Link to="/bet/roulette">Roulette</Link>
-              <Link to="/bet/poker">Poker</Link> 
-              <Link to="/user-listed">User Listed</Link>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
-          )}
+
+            {walletAddress ? (
+              <div className="text-center text-sm">
+                <p>Connected Wallet: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
+                {usdcBalance !== null && <p>USDC Balance: {usdcBalance}</p>}
+                {maticBalance !== null && <p>MATIC Balance: {maticBalance}</p>}
+                {estimatedGas !== null && <p>Estimated Gas: {estimatedGas}</p>}
+              </div>
+            ) : (
+              <div>
+                <Button onClick={() => connectWallet("MetaMask")} type="button" className="w-full mb-4">
+                  Connect with MetaMask
+                </Button>
+                <Button onClick={() => connectWallet("Phantom")} type="button" className="w-full mb-4">
+                  Connect with Phantom
+                </Button>
+                <Button onClick={() => connectWallet("CoinbaseWallet")} type="button" className="w-full mb-4">
+                  Connect with Coinbase Wallet
+                </Button>
+                <Button onClick={() => connectWallet("WalletConnect")} type="button" className="w-full">
+                  Connect with WalletConnect
+                </Button>
+              </div>
+            )}
+
+            <p className="text-sm text-red-600 font-medium">
+              Please pay your deposit of 1 USDC on the Polygon Amoy testnet.
+            </p>
+            <Button type="submit" className="w-full">
+              Submit Deposit
+            </Button>
+          </form>
+
+          <br />
+          <br />
+          <p className="text-center text-sm text-[#B3B3B3] mb-6">
+            &copy;2024 Encode Club Education Ltd. |{' '}
+            <a href="https://www.encode.club/privacy-policy">Privacy Policy</a>
+          </p>
         </div>
       </div>
-      <Link to="/bridge" className="bridge-btn" style={{ fontSize: "26px" }}>⇄ Bridge</Link> 
-      {!walletAddress ? (
-        <button className="wallet-btn" onClick={connectWallet}>
-          Connect Wallet
-        </button>
-      ) : (
-        <div className="wallet-info">
-          <p className="wallet-address">Connected: {walletAddress}</p>
-          <Link to="/my-collection">
-            <button className="assets-btn">My Assets</button>
-          </Link> 
-        </div>
-      )}
     </div>
   );
-};
-
-export default Header;
+}

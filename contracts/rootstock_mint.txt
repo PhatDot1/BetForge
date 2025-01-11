@@ -1,0 +1,81 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+contract RootstockMinter is ERC721Enumerable, Ownable {
+    using Strings for uint256;
+
+    uint256 public mintPrice = 0.05 ether; // Updated mint price to 0.05 ETH
+    uint256 public maxSupply = 10000;
+    uint256 public nextTokenId = 0;
+    address public claimingContractAddress;
+
+    address public beneficiary = 0xa341b0F69359482862Ed4422c6057cd59560D9E4; // Address to receive mint fee
+
+    // Mapping to store the metadata for each token
+    mapping(uint256 => string) private _tokenURIs;
+
+    // Events
+    event Mint(address indexed minter, uint256 tokenId, string tokenURI);
+    event MetadataUpdated(uint256 tokenId, string newTokenURI);
+
+    constructor(address _claimingContractAddress) ERC721("RootstockNFT", "RSNFT") Ownable() {
+        claimingContractAddress = _claimingContractAddress;
+    }
+
+    // Public minting function with custom token URI (initially 'result: pending')
+    function mint(uint256 quantity, string memory _tokenURI) public payable {
+        require(quantity > 0, "Quantity cannot be zero");
+        require(quantity <= 20, "Cannot mint more than 20 at a time");
+        require(nextTokenId + quantity <= maxSupply, "Exceeds max supply");
+        require(msg.value >= mintPrice * quantity, "Ether sent is not correct");
+
+        // Transfer the minting fee to the beneficiary
+        payable(beneficiary).transfer(mintPrice * quantity);
+
+        for (uint256 i = 0; i < quantity; i++) {
+            uint256 tokenId = nextTokenId;
+            nextTokenId += 1;
+
+            // Mint the NFT with the custom URI
+            _safeMint(msg.sender, tokenId);
+            _setTokenURI(tokenId, _tokenURI);
+
+            emit Mint(msg.sender, tokenId, _tokenURI);
+        }
+    }
+
+    // Function to update token URI (only the owner of the token or the contract owner can call this)
+    function updateTokenURI(uint256 tokenId, string memory _newTokenURI) public {
+        // Use ownerOf to check if the token exists
+        require(ownerOf(tokenId) != address(0), "Token does not exist");  // Checks if token exists by checking ownership
+        require(ownerOf(tokenId) == msg.sender || msg.sender == owner(), "Not authorized to update metadata");
+        
+        _setTokenURI(tokenId, _newTokenURI);
+        emit MetadataUpdated(tokenId, _newTokenURI);
+    }
+
+    // Internal function to set token-specific URIs
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
+        _tokenURIs[tokenId] = _tokenURI;
+    }
+
+    // Override tokenURI to return the correct URI for each token
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        return _tokenURIs[tokenId];
+    }
+
+    // Function to withdraw funds (only owner)
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No funds to withdraw");
+        payable(owner()).transfer(balance);
+    }
+
+    receive() external payable {}
+
+    fallback() external payable {}
+}

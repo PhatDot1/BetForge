@@ -1,95 +1,131 @@
 .card-container {
-    background-color: #1e1e1e;
-    max-width: 424px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    position: relative;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .card-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.7);
-  }
-  
-  .card-details {
-    padding: 0 15px;
-  }
-  
-  .card-header {
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .card-name {
-    color: #ffffff;
-  }
-  
-  .card-price {
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 12px;
-    background: #ff7f00; /* Set the orange background color here */
-    padding: 9px 35px;
-  }
-  
-  .card-btn {
-    background-color: #2a2a2a;
-    border-radius: 12px;
-    color: #ffffff;
-    padding: 18px;
-    width: 280px;
-    z-index: 1;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    height: 90px;
-  }
-  
-  .card-container:hover .card-btn {
-    opacity: 1;
-  }
- 
+  background-color: #1e1e1e;
+  max-width: 424px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  position: relative;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-  /* General Modal Styles */
-.modal {
-  position: fixed;
-  top: 50%;
+.card-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.card-price {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #ff7f00;
+  padding: 5px 10px;
+  border-radius: 12px;
+}
+
+.card-event-type {
+  color: #b0b0b0;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.card-artist {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.card-btn {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 18px;
+  width: 280px;
+  position: absolute;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #2a2a2a; /* Dark background to match your theme */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+.card-container:hover .card-btn {
+  opacity: 1;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #2a2a2a;
   padding: 20px;
-  border-radius: 8px;
-  color: #ffffff; /* White text color for contrast */
-  max-width: 500px; /* Width constraint for the modal */
-  width: 90%; /* Ensure responsiveness */
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7); /* Add a subtle shadow */
-  z-index: 1000; /* Ensure it appears on top of other content */
+  border-radius: 12px;
+  color: #ffffff;
+  max-width: 400px;
+  width: 90%;
 }
 
 .modal h2 {
-  color: #ff7f00; /* Use your theme's orange color for headings */
+  color: #ff7f00;
   margin-bottom: 20px;
 }
 
 .modal p {
-  color: #ffffff; /* White text for paragraphs */
   margin-bottom: 20px;
 }
 
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
 .modal button {
-  background-color: #ff7f00; /* Orange background for buttons */
+  background-color: #ff7f00;
   color: #ffffff;
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -99,16 +135,5 @@
 }
 
 .modal button:hover {
-  background-color: #e66b00; /* Slightly darker orange on hover */
-}
-
-/* Modal Overlay Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* Dark overlay with transparency */
-  z-index: 999; /* Ensure it appears just below the modal itself */
+  background-color: #e66b00;
 }

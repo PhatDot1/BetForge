@@ -1,8 +1,36 @@
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  min-height: 100vh;
+}
+
+.sectionTitle {
+  margin: 30px 0 20px 70px;
+  color: #ff7f00;
+  font-size: 28px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .collections {
   display: flex;
-  align-items: flex-start; /* Align items to the top */
+  align-items: flex-start;
   justify-content: center;
   padding: 30px 50px;
   flex-wrap: wrap;
-  gap: 40px 20px; /* Even gap between the cards */
+  gap: 40px 20px;
+}
+
+@media (max-width: 768px) {
+  .sectionTitle {
+    margin-left: 20px;
+    font-size: 24px;
+  }
+
+  .collections {
+    padding: 20px;
+    gap: 30px 15px;
+  }
 }

@@ -1,23 +1,21 @@
 const hre = require("hardhat");
 
 async function main() {
-  // Deployment of WrappedNFT contract
-  const WrappedNFT = await hre.ethers.getContractFactory("WrappedNFT");
-  const wrappedNFT = await WrappedNFT.deploy();
-  await wrappedNFT.deployed();
-  console.log("WrappedNFT deployed to:", wrappedNFT.address);
+  // Deployment of RootstockMinter contract
+  const RootstockMinter = await hre.ethers.getContractFactory("RootstockMinter");
+  const rootstockMinter = await RootstockMinter.deploy("0xYourClaimingContractAddress");  // Set the claiming contract address here
+  await rootstockMinter.deployed();
+  console.log("RootstockMinter deployed to:", rootstockMinter.address);
 
-  // Deployment of Trading contract with the Wormhole Relayer address
-  const Trading = await hre.ethers.getContractFactory("Trading");
-  const trading = await Trading.deploy("0x7B1bD7a6b4E61c2a123AC6BC2cbfC614437D0470");
-  await trading.deployed();
-  console.log("Trading deployed to:", trading.address);
+  // Deployment of RootstockNFTClaim contract
+  const RootstockNFTClaim = await hre.ethers.getContractFactory("RootstockNFTClaim");
+  const rootstockNFTClaim = await RootstockNFTClaim.deploy(rootstockMinter.address);  // Set the minting contract address here
+  await rootstockNFTClaim.deployed();
+  console.log("RootstockNFTClaim deployed to:", rootstockNFTClaim.address);
 
-  // Deployment of WormholeGreeter contract with the Wormhole Relayer address
-  const WormholeGreeter = await hre.ethers.getContractFactory("WormholeGreeter");
-  const wormholeGreeter = await WormholeGreeter.deploy("0x7B1bD7a6b4E61c2a123AC6BC2cbfC614437D0470");
-  await wormholeGreeter.deployed();
-  console.log("WormholeGreeter deployed to:", wormholeGreeter.address);
+  // Optionally set the claiming contract address in the minting contract
+  await rootstockMinter.setClaimingContractAddress(rootstockNFTClaim.address);
+  console.log("Claiming contract address set in RootstockMinter:", rootstockNFTClaim.address);
 }
 
 main().catch((error) => {

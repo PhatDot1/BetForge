@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "./MyCollection.css";
 import placeholderNFT from "../../assets/placeholderNFT.gif"; // Adjust the path according to your project structure
 
@@ -35,6 +36,14 @@ const MyCollection = () => {
         ) : (
           <p>No NFTs found in your collection.</p>
         )}
+      </div>
+      {/* Add a "Combine" button here */}
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <Link to="/combine">
+          <button className="combine-button" style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}>
+            Combine
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -1,0 +1,311 @@
+/* UpgradeAndBurnNFT.module.css */
+
+.pageContainer {
+  background: linear-gradient(to bottom right, #1a1a2e, #16213e);
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.walletCard {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.walletIcon {
+  font-size: 1.5rem;
+}
+
+.walletAddress {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.changeWalletBtn {
+  background-color: #ff7f00;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-weight: 600;
+}
+
+.changeWalletBtn:hover {
+  background-color: #ff9933;
+  transform: translateY(-2px);
+}
+
+.nftSection {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.nftScrollContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  min-height: 250px;
+}
+
+.nftCard, .nftCardSkeleton {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  min-width: 200px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.nftCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nftCard.selected {
+  border: 2px solid #ff7f00;
+}
+
+.nftImage, .nftImageSkeleton {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}
+
+.nftImageSkeleton {
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: pulse 1.5s infinite;
+}
+
+.nftName, .nftNameSkeleton {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nftNameSkeleton {
+  height: 1rem;
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: pulse 1.5s infinite;
+}
+
+.nftId, .nftIdSkeleton {
+  font-size: 0.875rem;
+  color: #ccc;
+}
+
+.nftIdSkeleton {
+  height: 0.875rem;
+  width: 40%;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: pulse 1.5s infinite;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.upgradeBtn, .refreshBtn {
+  background-color: #ff7f00;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-weight: 600;
+}
+
+.upgradeBtn:hover:not(:disabled), .refreshBtn:hover {
+  background-color: #ff9933;
+  transform: translateY(-2px);
+}
+
+.upgradeBtn:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.connectWalletCard {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 3rem;
+  text-align: center;
+  color: #fff;
+  font-size: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.connectWalletBtn {
+  background-color: #ff7f00;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-weight: 600;
+}
+
+.connectWalletBtn:hover {
+  background-color: #ff9933;
+  transform: translateY(-2px);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 2rem 1rem;
+  }
+
+  .content {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .nftCard, .nftCardSkeleton {
+    min-width: 150px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .upgradeBtn, .refreshBtn {
+    width: 100%;
+  }
+}
+.emptyNftCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 2rem;
+    min-width: 200px;
+    height: 250px;
+    text-align: center;
+  }
+  
+  .emptyNftIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .emptyNftText {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .refreshBtn {
+    background-color: #ff7f00;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .refreshBtn:hover {
+    background-color: #ff9933;
+    transform: translateY(-2px);
+  }
+  
+  .refreshIcon {
+    width: 1rem;
+    height: 1rem;
+  }
