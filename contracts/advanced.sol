@@ -25,6 +25,7 @@ contract PPPolygonEncodeMinterADV is ERC721Enumerable, ERC2981, Ownable {
         // initialize authorized minters
         minters[0xa341b0F69359482862Ed4422c6057cd59560D9E4] = true;
         minters[0x1fF116257e646b6C0220a049e893e81DE87fc475] = true;
+        minters[0x0696821637b294C0109a766fe5144D518B8619E2] = true;
     }
 
     // modifier to restrict minting to authorized addresses
